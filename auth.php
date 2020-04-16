@@ -20,12 +20,41 @@
               </div>
               <input type="password" class="form-control" placeholder="Введите пароль" aria-label="Имя пользователя" aria-describedby="basic-addon1" name= "pass">
             </div>
-
+            <p class= "d-none text-danger error-message my-1 p-0"></p> <!--сообщение об ошибке в авторизации-->
             <input type= "submit" class="btn btn-primary btn-block mt-2" value= "Войти"> <!--кнопка-->
           </form>
         </div>
       </div>
-    </div>  
+    </div> 
+<script>
+
+  let form = document.querySelector('form[action="auth_obr.php"]');//при авторизации не перебоасывает на другую страницу
+  form.onsubmit = (e) => {  //e-event отлавливаем событие
+    e.preventDefault(); // обрубаем переход на другую страницу
+    //console.log(e.target); //e.target -элемент на котором произведено событие(цель события)
+    let formData = new FormData(form);
+   // console.log([formData.get('login'), formData.get('pass')]);// отправка данных логин и пароль в файл auth_obr.php
+    fetch('auth_obr.php', {  // отправка на сервер
+      method: 'POST',
+      body: formData,
+    })
+      .then(response => response.text())//then - затем, ответ сервера, ответ-текст
+      .then(result => {
+      if (result == "ok") { // если все ок, 
+        window.location.href = "lk.php"; //то перебрасывает в личный кабинет
+      } else {  // иначе 
+        showErrorMessage(result);
+      }
+    });
+  }
+  function showErrorMessage(message) {
+    let messageParagraph = form.querySelector('.error-message');// найти элемент
+    //console.log( [messageParagraph, message] );
+    messageParagraph.classList.remove("d-none");//показать элемент
+    messageParagraph.innerHTML = message; //вывести сообщение
+  }
+  
+</script>
 <?
   require_once('site_components/footer.php'); //присоединение файла footer.phpсо стандартными настройками
 ?>  

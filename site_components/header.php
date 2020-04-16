@@ -3,6 +3,8 @@
 <!doctype html> <!--копируем файл auth и убираем лишнее. все после <body> до скриптов <!-- Optional JavaScript -->
 <html lang="ru">
   <head>
+    
+    
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -12,6 +14,7 @@
 
     <title><?= $title ?></title> <!--назначаем переменную, для любых файлов этого ?= тоже самое что и echo сайта-->
     <style><?= $style ?></style> <!--тоже-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> <!-- подключение библиотеки jquery -->
   </head>
   <body> <!--начало всех файлов(тоже из бустрапа вырезаем из файлов, при необходимости и вставляем сюда-->
   

@@ -45,17 +45,51 @@
               </div>
               <input type="text" class="form-control" placeholder="Отчество" aria-label="Имя пользователя" aria-describedby="basic-addon1" name= "patronymic">
             </div>
+            <h6 class= "text">Дата рождения</h2>
+
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-calendar" aria-hidden="true"></i></span>
               </div>
+
               <input type="date" class="form-control" placeholder="дата рождения" aria-label="Имя пользователя" aria-describedby="basic-addon1" name= "birthdate">
             </div>
-            <input type= "submit" class="btn btn-primary btn-block mt-2" value= "Зарегистрироваться"> <!--кнопка-->
+            <p class= "d-none text-danger error-message my-1 p-0"></p> <!--сообщение об ошибке в регистрации-->
+            <input type= "submit" class="btn btn-primary btn-block mt-5" value= "Зарегистрироваться"> <!--кнопка-->
           </form>
         </div>
       </div>
-    </div>  
+    </div>
+  <script>
+    let form = document.querySelector('form[action="reg_obr.php"]');
+    form.onsubmit = (e) => {
+      e.preventDefault(); //прерываем событие
+      //console.log("Пытаемся отправить форму");
+      let formData = new FormData(form); //формируем данные для отправки
+      //console.log(formData.get("patronymic") );
+      
+      fetch('reg_obr.php', {  // отправка на сервер
+        method: 'POST',
+        body: formData,
+      })
+        .then(response => response.text()) //then - затем, ответ сервера, ответ-текст
+        .then(result => { //console.log(result)}); не все поля заполнены
+          if (result == "ok") {
+            alert("Пользователь успешно зарегистрирован")// если все ок, 
+            window.location.href = "auth.php"; //то перебрасывает в личный кабинет
+          } else {  // иначе 
+            //console.log(result);
+            showErrorMessage(result);
+          }
+        });
+    }
+    function showErrorMessage(message) {
+      let messageParagraph = form.querySelector('.error-message');// найти элемент
+      //console.log( [messageParagraph, message] );
+      messageParagraph.classList.remove("d-none");//показать скрытый элемент
+      messageParagraph.innerHTML = message; //вывести сообщение
+    }
+  </script>
 <?
   require_once('site_components/footer.php'); //присоединение файла footer.phpсо стандартными настройками
 ?>  

@@ -1,5 +1,5 @@
 <?php
-
+require_once("db.php"); // подключение к БД
 /*$_GET
 */
 header('Content-type: text/html; charset=utf-8');
@@ -12,7 +12,7 @@ $lastname = trim($_POST["lastname"]);
 $patronymic = trim($_POST["patronymic"]);
 $birthdate = trim($_POST["birthdate"]);
 
-$login = htmlspecialchars($login); // для защиты от атак с вводом кода в поля
+$login = htmlspecialchars($login); // для защиты от атак с вводом скрипта/кода в поля
 $pass = htmlspecialchars($pass); // для защиты от атак
 $passrepeat = htmlspecialchars($passrepeat); // для защиты от атак
 $name = htmlspecialchars($name); // для защиты от атак
@@ -43,17 +43,7 @@ if ($pass != $passrepeat) {  //проверка пароля на совпаде
  //3rKgVqo*
 $pass = password_hash($pass, PASSWORD_BCRYPT);
 
- //----------------------------подключение к базе данных------------------
-$dbhost = "localhost";  // присоединяем сайт к базе данных бегета
-$dbuser = "olgatilova_auth";
-$dbpass = "3rKgVqo*"; // пароль из бд бегета
-$dbname = "olgatilova_auth";
-$mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
-$mysqli->set_charset("utf-8"); //метод обьекта
-
-if ($mysqli->connect_error) { // если не удается подключиться к базе данных
- die("Не удалось подключиться к БД" .$mysqli->connect_error);
-}
+ //-----подключение к базе данных require_once("db.php"); // подключение к БД------------------
 
 $result = $mysqli->query("SELECT * FROM `users` WHERE `login`='$login'");// из бегета ,SQL, копируем сюда
 //exit(var_dump($result->fetch_assoc())); //для сравнения совпадений
@@ -67,7 +57,7 @@ $result = $mysqli->query("INSERT INTO `users`(`login`, `password`, `name`, `last
 if(!$result) {
  exit("Не удалось добавить пользователя");
 }
-  exit("Пользователь $login успешно зарегистрирован!");
+  exit("ok");
  
 /*exit("$login | $pass | $passrepeat | $name | $lastname | $patronymic | $birthdate <br>");//exit как реторн, после него код дальше не работает*/
 
